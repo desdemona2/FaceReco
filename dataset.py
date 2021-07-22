@@ -3,8 +3,10 @@ import time
 import cv2 as cv
 
 site = os.path.expanduser("~/.local/lib/python3.9/site-packages/")
+
+
 if not (os.path.isdir("./samples")):
-    os.path.mkdir("samples")
+    os.mkdir("./samples")
 
 
 classifier = cv.CascadeClassifier(
@@ -20,21 +22,25 @@ def face_data(classifier):
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
         values = classifier.detectMultiScale(gray, 1.5, 2)
-        if values is ():
+        if values == ():
             print("Camera is unable to detect any face :( pls show yourself")
             time.sleep(5)
             continue
 
         x, y, w, h = values[0]
         face = gray[y : y + h, x : x + w]
+        cv.imshow("View", face)
         samples += 1
+
+        write_data(face, samples, name)
 
         if cv.waitKey(17) == 13 or samples >= 100:
             break
 
 
-def write_data(face, sample, name):
-    fileName = "_".join(name, sample)
+def write_data(face, sample: int, name: str):
+    fileName = "./samples/" + "_".join([name, str(sample), ".jpg"])
+    cv.imwrite(fileName, face)
 
 
 face_data(classifier)
