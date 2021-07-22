@@ -21,7 +21,7 @@ def face_data(classifier):
         _, frame = capture.read()
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
-        values = classifier.detectMultiScale(gray, 1.5, 2)
+        values = classifier.detectMultiScale(gray, 2, 2)
         if values == ():
             print("Camera is unable to detect any face :( pls show yourself")
             time.sleep(5)
@@ -34,11 +34,17 @@ def face_data(classifier):
 
         write_data(face, samples, name)
 
-        if cv.waitKey(17) == 13 or samples >= 100:
+        if cv.waitKey(17) == 5 or samples >= 100:
             break
 
 
 def write_data(face, sample: int, name: str):
+    if len(os.listdir("./samples")) > 80:
+        print(
+            """Samples are already recorded. To record new samples delete old samples
+        or increase the number of samples in face_data function"""
+        )
+        return None
     fileName = "./samples/" + "_".join([name, str(sample), ".jpg"])
     cv.imwrite(fileName, face)
 
