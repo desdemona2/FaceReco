@@ -9,11 +9,12 @@ classifier = cv.CascadeClassifier(
 
 if not (os.path.isdir("./samples")):
     os.mkdir("./samples")
+    print("samples directory created")
 
 
 def face_data(classifier):
     capture = cv.VideoCapture(0)
-    samples, name = 0, "Subject"
+    samples, id = 0, 222
     if len(os.listdir("./samples")) >= 90:
         print(
             """enough samples are already collected. To collect new samples remove old samples
@@ -33,14 +34,14 @@ def face_data(classifier):
         cv.imshow("Face", face)
         samples += 1
 
-        write_data(face, samples, name)
+        write_data(face, samples, id)
 
         if cv.waitKey(4) == ord("q") or samples >= 100:
             break
 
 
-def write_data(face, sample: int, name: str):
-    fileName = "./samples/" + "_".join([name, str(sample), ".jpg"])
+def write_data(face, sample: int, id: int):
+    fileName = "./samples/" + "_".join([str(id), str(sample), ".jpg"])
     cv.imwrite(fileName, face)
 
 
