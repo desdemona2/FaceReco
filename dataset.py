@@ -15,17 +15,11 @@ if not (os.path.isdir("./samples")):
 def face_data(classifier):
     capture = cv.VideoCapture(0)
     samples, id = 0, 222
-    if len(os.listdir("./samples")) >= 90:
-        print(
-            """enough samples are already collected. To collect new samples remove old samples
-        or increase the value of if check in face_data function"""
-        )
-        return None
     while True:
         _, frame = capture.read()
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
 
-        values = classifier.detectMultiScale(gray, 2, 2)
+        values = classifier.detectMultiScale(gray, 1.1, 3)
         if len(values) == 0:
             continue
 
